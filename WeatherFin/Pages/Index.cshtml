@@ -1,0 +1,43 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@inject SignInManager<IdentityUser> signInManager
+
+<div class="text-center">
+    <h1 class="display-4">Welcome in example Weather App!</h1>
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <h1>Weather data has been refreshed!</h1>
+    }
+    <form method = "get">
+    <label for="city">Search weather info: </label>
+    <input type="text" asp-for="SearchCity"><br>
+    <input type="date" asp-for="SearchDate" value="12.06.2022"><br>
+    <input type="submit" class="input-group mb-3" value="Search">
+    </form>
+    <table class="table table-dark">
+        @if (Model.searchedList != null && Model.searchedList.Any() == true)
+        {
+            @foreach (var weather in Model.searchedList)
+            {
+                <tr>
+                    <td>
+                        @weather.CityName
+                    </td>
+                    <td>
+                        @weather.dateOfMeasurement
+                    </td>
+                    <td>
+                        @weather.temperature
+                    </td>
+                    <td>
+                        @weather.weatherDescription
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
